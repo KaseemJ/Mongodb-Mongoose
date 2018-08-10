@@ -30,35 +30,35 @@ var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/news";
 // Connect to the Mongo DB
 mongoose.connect(MONGODB_URI);
 
-// GET all the articles that favorite is set to false
+// GET all the articles that is set to false
 // and render them to the index.handlebars page
 app.get("/", function (req, res) {
-  db.#.find({ favorite: false })
+  db.article.find({ article: false })
     .then(function (data) {
       // res.json(data);
-      res.render("index", { #: data });
+      res.render("index", { article: data });
     }).catch(function (err) {
       res.status(404).send(err);
     });
 });
 
-// GET all the articles that favorite is set to true
-// and render them to the favorite.handlebars page
-app.get("/#", function (req, res) {
-  db.#.find({ favorite: true })
+// GET all the articles that is set to true
+// and render them to the article.handlebars page
+app.get("./article", function (req, res) {
+  db.article.find({ favorite: true })
     .then(function (data) {
       // res.json(data);
-      res.render("#", { movie: data });
+      res.render("article", { article: data });
     }).catch(function (err) {
       res.status(404).send(err);
     });
 });
 
 // POST an Article to the mongo database
-app.post("/api/#", function (req, res) {
-  db.#.create(req.body)
+app.post("/api/index", function (req, res) {
+  db.index.create(req.body)
     .then(function () {
-      // res.json(db#);
+      // res.json(dbIndex);
       res.redirect("/")
     }).catch(function (err) {
       res.status(400).send(err);
@@ -66,10 +66,10 @@ app.post("/api/#", function (req, res) {
 });
 
 // PUT (UPDATE) article by its _id 
-// Will set the movie favorite to whatever the value 
-// of the req.body.favorite boolean is
+// Will set the articles to whatever the value 
+// of the req.body.article boolean is
 app.put("/api/article/:id", function (req, res) {
-  db.Movie.findByIdAndUpdate(req.params.id, { favorite: req.body.favorite }, { new: true })
+  db.articles.findByIdAndUpdate(req.params.id, { favorite: req.body.article }, { new: true })
     .then(function (dbArticle) {
       res.json(dbArticle);
     }).catch(function (err) {
